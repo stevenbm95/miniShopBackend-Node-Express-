@@ -8,7 +8,19 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
+      "src": "/api/customers",
+      "dest": "/index.js"
+    },
+    {
+      "src": "/api/products",
+      "dest": "/index.js"
+    },
+    {
+      "src": "/api/email",
+      "dest": "/index.js"
+    },
+    {
+      "src": "/api/users",
       "dest": "/index.js"
     }
   ]
