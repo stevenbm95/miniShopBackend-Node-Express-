@@ -1,5 +1,5 @@
 require("dotenv").config();
-
+const pg = require('pg');
 
 // module.exports = {
 //   development: {
@@ -35,6 +35,7 @@ module.exports = {
     database: process.env.DB_NAME || "verceldb",
     host: process.env.DB_HOST || "ep-polished-river-a4k46f5i.us-east-1.aws.neon.tech",
     dialect: "postgres",
+    dialectModule: pg,
     port: process.env.DB_PORT || 5432,
     dialectOptions: {
       ssl: {
@@ -49,6 +50,7 @@ module.exports = {
     database: process.env.DB_NAME || "verceldb",
     host: process.env.DB_HOST || "ep-polished-river-a4k46f5i.us-east-1.aws.neon.tech",
     dialect: "postgres",
+    dialectModule: pg,
     port: process.env.DB_PORT || 5432,
     dialectOptions: {
       ssl: {
@@ -63,6 +65,7 @@ module.exports = {
     database: process.env.POSTGRES_DATABASE || "verceldb",
     host: process.env.POSTGRES_HOST || "ep-polished-river-a4k46f5i.us-east-1.aws.neon.tech",
     dialect: "postgres",
+    dialectModule: pg,
     port: process.env.DB_PORT || 5432,
     dialectOptions: {
       ssl: {
