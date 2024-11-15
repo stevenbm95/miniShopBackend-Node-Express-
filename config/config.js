@@ -43,6 +43,7 @@ module.exports = {
         rejectUnauthorized: false, // Para evitar problemas con SSL en conexiones remotas.
       },
     },
+    redis: process.env.REDIS_URL,
   },
   test: {
     username: process.env.DB_USER || "default",

@@ -1,14 +1,21 @@
-
 const { Product } = require("../models");
+const { connect } = require("../redis/configRerdis");
 require("dotenv").config();
 
 const ProductController = {
   getAllProducts: async (req, res) => {
     try {
-      const products = await Product.findAll();
-      res.json(products);
-      return products
+      // const redis = await connect();
+      const redis = await connect();
+      const key = "products";
+      const productsRedis = await redis.get(key);
 
+      if (productsRedis) return JSON.parse(productsRedis);
+
+      const products = await Product.findAll();
+      await redis.set(key, JSON.stringify(products));
+
+      return products;
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Server error" });
@@ -16,9 +23,9 @@ const ProductController = {
   },
 
   create: async (req, res) => {
-    try {      
-
-      const { nameProduct, description, image, isActive, price, stock } = req.body;
+    try {
+      const { nameProduct, description, image, isActive, price, stock } =
+        req.body;
 
       const product = await Product.create({
         nameProduct,
@@ -29,7 +36,9 @@ const ProductController = {
         stock,
       });
 
-      res.status(201).json({ message: "Product created successfully", product });
+      res
+        .status(201)
+        .json({ message: "Product created successfully", product });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Server error" });
@@ -38,7 +47,8 @@ const ProductController = {
 
   updateProduct: async (req, res) => {
     try {
-      const { nameProduct, description, image, isActive, price, stock } = req.body;
+      const { nameProduct, description, image, isActive, price, stock } =
+        req.body;
       const { id } = req.params;
 
       const product = await Product.findByPk(id);
@@ -57,7 +67,9 @@ const ProductController = {
 
       await product.save();
 
-      res.status(200).json({ message: "Product updated successfully", product });
+      res
+        .status(200)
+        .json({ message: "Product updated successfully", product });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Server error" });
@@ -85,4 +97,4 @@ const ProductController = {
   },
 };
 
-module.exports = ProductController; 
+module.exports = ProductController;
