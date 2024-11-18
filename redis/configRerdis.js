@@ -22,19 +22,26 @@ const createClient = require('redis').createClient;
 
 let redisClient;
 
-const ConectRedis = {
-  connect: async () => {
-    if (!redisClient) {
-      redisClient = createClient({
-        url: process.env.REDIS_URL,
-      });
-  
-      redisClient.on("error", (err) => console.error("Redis Client Error", err));
-      await redisClient.connect();
-      console.log("Redis Client Connected");
-    }
-    return redisClient;
+const connectRedis  = async () =>{
+  if (!redisClient) {
+    redisClient = createClient({
+      url: process.env.REDIS_URL,
+    });
+
+    redisClient.on("error", (err) =>
+      console.error("Redis Client Error:", err)
+    );
+    redisClient.on("connect", () =>
+      console.log("Redis conectado exitosamente.")
+    );
+    redisClient.on("ready", () =>
+      console.log("Redis está listo para usarse.")
+    );
+
+    await redisClient.connect();
   }
+
+  return redisClient;
 }
 
-module.exports = ConectRedis;
+module.exports = connectRedis ;
